@@ -707,7 +707,7 @@
       { cls: "", text: "Tengo algo para ti, y te lo doy en persona, mi amor. No cabe en una carta, pero cabe en las ganas que tengo de verte, de abrazarte y de quedarme." },
       { cls: "besos", text: "Te amo mucho, mi amor. Feliz Día de San Valentín. Hoy, mañana y siempre, te elijo a ti. Besotes." },
       { cls: "sig", text: "Con todo mi amor," },
-      { cls: "sig-name", text: "Tu futuro marido" }
+      { cls: "sig-name", text: "Tu futuro novio" }
     ];
 
     groups.forEach(function (g) {
