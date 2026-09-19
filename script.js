@@ -20,53 +20,90 @@
 
   function makePlane(colors) {
     var g = new THREE.Group();
-    var body = new THREE.Mesh(
-      new THREE.BoxGeometry(0.55, 0.5, 2.55),
-      new THREE.MeshPhongMaterial({ color: 0xf7f7fb, shininess: 60 })
-    );
-    g.add(body);
-    var nose = new THREE.Mesh(
-      new THREE.ConeGeometry(0.34, 0.55, 4),
-      new THREE.MeshPhongMaterial({ color: colors[0], shininess: 40 })
-    );
+    var main = new THREE.MeshPhongMaterial({ color: 0xfdfdff, shininess: 70, specular: 0x888888 });
+    var acc = new THREE.MeshPhongMaterial({ color: colors[0], shininess: 55, specular: 0x666666 });
+    var acc2 = new THREE.MeshPhongMaterial({ color: colors[1], shininess: 85, specular: 0x999999 });
+
+    var fuse = new THREE.Mesh(new THREE.CylinderGeometry(0.19, 0.24, 3.2, 14), main);
+    fuse.rotation.x = Math.PI / 2;
+    fuse.position.z = -0.15;
+    g.add(fuse);
+
+    var nose = new THREE.Mesh(new THREE.ConeGeometry(0.19, 0.7, 14), acc);
     nose.rotation.x = Math.PI / 2;
-    nose.position.z = 1.5;
+    nose.position.z = 1.7;
     g.add(nose);
-    var wing = new THREE.Mesh(
-      new THREE.BoxGeometry(5.4, 0.06, 1.05),
-      new THREE.MeshPhongMaterial({ color: colors[0], shininess: 50 })
+
+    var canopy = new THREE.Mesh(
+      new THREE.SphereGeometry(0.15, 14, 10),
+      new THREE.MeshPhongMaterial({ color: 0xcfeaff, shininess: 110, specular: 0xffffff, transparent: true, opacity: 0.6 })
     );
-    wing.position.y = 0.08; wing.position.z = -0.1;
-    g.add(wing);
-    var tailH = new THREE.Mesh(
-      new THREE.BoxGeometry(1.9, 0.06, 0.6),
-      new THREE.MeshPhongMaterial({ color: colors[0], shininess: 50 })
-    );
-    tailH.position.y = 0.05; tailH.position.z = -1.2;
-    g.add(tailH);
-    var tailV = new THREE.Mesh(
-      new THREE.BoxGeometry(0.07, 0.85, 0.7),
-      new THREE.MeshPhongMaterial({ color: colors[1], shininess: 50 })
-    );
-    tailV.position.y = 0.42; tailV.position.z = -1.18;
-    g.add(tailV);
-    var stripe = new THREE.Mesh(
-      new THREE.BoxGeometry(0.56, 0.52, 0.5),
-      new THREE.MeshPhongMaterial({ color: colors[1], shininess: 60 })
-    );
-    stripe.position.z = -0.4;
+    canopy.scale.set(1, 0.8, 1.7);
+    canopy.position.set(0, 0.16, 0.6);
+    g.add(canopy);
+
+    var stripe = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.06, 2.7), acc);
+    stripe.position.y = 0.11; stripe.position.z = -0.2;
     g.add(stripe);
+    var stripeL = stripe.clone();
+    stripeL.position.y = -0.11;
+    g.add(stripeL);
+
+    var wings = new THREE.Group();
+    var right = new THREE.Mesh(new THREE.BoxGeometry(3.1, 0.06, 1.15), acc);
+    right.position.x = 1.72;
+    right.rotation.y = -0.34;
+    wings.add(right);
+    var left = right.clone();
+    left.position.x = -1.72;
+    left.rotation.y = 0.34;
+    wings.add(left);
+    var wr = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.32, 0.5), acc2);
+    wr.position.set(2.78, 0.2, 0.35);
+    wings.add(wr);
+    var wl = wr.clone();
+    wl.position.x = -2.78;
+    wings.add(wl);
+    var lightR = new THREE.Mesh(
+      new THREE.SphereGeometry(0.07, 8, 8),
+      new THREE.MeshBasicMaterial({ color: 0x39ff9c })
+    );
+    lightR.position.set(2.84, 0.04, 0.34);
+    wings.add(lightR);
+    var lightL = new THREE.Mesh(
+      new THREE.SphereGeometry(0.07, 8, 8),
+      new THREE.MeshBasicMaterial({ color: 0xff5050 })
+    );
+    lightL.position.set(-2.84, 0.04, 0.34);
+    wings.add(lightL);
+    wings.position.y = 0.07;
+    g.add(wings);
+
+    var tailH = new THREE.Mesh(new THREE.BoxGeometry(2.1, 0.05, 0.6), acc);
+    tailH.position.set(0, 0.14, -1.42);
+    g.add(tailH);
+
+    var fin = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.95, 0.75), acc2);
+    fin.position.set(0, 0.58, -1.55);
+    fin.rotation.x = -0.32;
+    g.add(fin);
+
+    var tailCone = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.2, 0.6, 10), acc);
+    tailCone.rotation.x = -Math.PI / 2;
+    tailCone.position.z = -2.1;
+    g.add(tailCone);
+
     var prop = new THREE.Group();
-    var bladeMat = new THREE.MeshPhongMaterial({ color: 0x22262e, shininess: 30 });
-    var b1 = new THREE.Mesh(new THREE.BoxGeometry(0.16, 2.0, 0.06), bladeMat);
-    var b2 = new THREE.Mesh(new THREE.BoxGeometry(0.16, 2.0, 0.06), bladeMat);
-    b2.rotation.z = Math.PI / 2;
-    prop.add(b1); prop.add(b2);
-    var spinner = new THREE.Mesh(new THREE.SphereGeometry(0.18, 12, 12),
-      new THREE.MeshPhongMaterial({ color: colors[1], shininess: 80 }));
-    spinner.position.z = 0.12;
+    var bladeMat = new THREE.MeshPhongMaterial({ color: 0x1d222b, shininess: 40 });
+    for (var bi = 0; bi < 3; bi++) {
+      var blade = new THREE.Mesh(new THREE.BoxGeometry(0.16, 1.9, 0.05), bladeMat);
+      blade.rotation.z = bi * Math.PI / 3;
+      prop.add(blade);
+    }
+    var spinner = new THREE.Mesh(new THREE.SphereGeometry(0.16, 12, 10), acc2);
+    spinner.position.z = 0.1;
     prop.add(spinner);
-    prop.position.z = 1.82;
+    prop.position.z = 2.06;
     prop.name = "prop";
     g.add(prop);
     return g;
@@ -234,6 +271,30 @@
       { r: 0.0, g: 0.65, b: 0.75 },
       { r: 0.5, g: 0.95, b: 0.9 }
     ];
+    var pinkIdx = [
+      { r: 1.0, g: 0.45, b: 0.75 },
+      { r: 1.0, g: 0.85, b: 0.95 },
+      { r: 0.95, g: 0.3, b: 0.6 },
+      { r: 1.0, g: 0.8, b: 0.95 }
+    ];
+    var sunsetIdx = [
+      { r: 1.0, g: 0.6, b: 0.45 },
+      { r: 1.0, g: 0.92, b: 0.8 },
+      { r: 1.0, g: 0.42, b: 0.3 },
+      { r: 1.0, g: 0.9, b: 0.75 }
+    ];
+    var lilacIdx = [
+      { r: 0.62, g: 0.45, b: 1.0 },
+      { r: 0.92, g: 0.85, b: 1.0 },
+      { r: 0.45, g: 0.25, b: 0.95 },
+      { r: 1.0, g: 0.72, b: 1.0 }
+    ];
+    var aquaIdx = [
+      { r: 0.3, g: 0.85, b: 1.0 },
+      { r: 0.85, g: 0.97, b: 1.0 },
+      { r: 0.1, g: 0.62, b: 0.92 },
+      { r: 0.6, g: 0.92, b: 1.0 }
+    ];
 
     addPlane(
       { period: 12, kind: "heart", center: new THREE.Vector3(0, 0.6, 0), scale: 0.55, trailLife: 14 },
@@ -255,8 +316,24 @@
       { period: 14, kind: "orbit", center: new THREE.Vector3(-2, 1.0, 2), radius: 17, tilt: -0.22, trailLife: 7 },
       [0xffffff, 0x00b8a9, 0xffffff]
     );
+    addPlane(
+      { period: 5, kind: "ring", center: new THREE.Vector3(-6.5, 4.6, -4), radius: 3.4, trailLife: 7 },
+      [0xffffff, 0xff5aa8, 0xffffff]
+    );
+    addPlane(
+      { period: 15, kind: "heart", center: new THREE.Vector3(19.5, 3.5, -15), scale: 0.34, trailLife: 12 },
+      [0xffffff, 0xff7a5a, 0xffffff]
+    );
+    addPlane(
+      { period: 11, kind: "orbit", center: new THREE.Vector3(2, 5.2, -6), radius: 15, tilt: 0.5, trailLife: 6 },
+      [0xffffff, 0x8a5cff, 0xffffff]
+    );
+    addPlane(
+      { period: 6, kind: "ring", center: new THREE.Vector3(-18, 2.2, -6), radius: 4.6, trailLife: 7 },
+      [0xffffff, 0x2ec7ff, 0xffffff]
+    );
 
-    var trailColors = [redIdx, blueIdx, goldIdx, violetIdx, tealIdx];
+    var trailColors = [redIdx, blueIdx, goldIdx, violetIdx, tealIdx, pinkIdx, sunsetIdx, lilacIdx, aquaIdx];
 
     function pathPoint(p, t) {
       var x = Math.sin(t); x = x * x * x;
@@ -289,7 +366,7 @@
     var dummy = new THREE.Object3D();
 
     var T = 0;
-    var prevAngle = [0, 0, 0, 0, 0];
+    var prevAngle = planes.map(function () { return 0; });
 
     function animate() {
       requestAnimationFrame(animate);
@@ -684,6 +761,30 @@
 
   var letterOpened = false;
 
+  var planeSvg = document.querySelector("#letterPlane svg");
+  var planeAnim = null;
+
+  function flyLetterPlane() {
+    if (!planeSvg) return;
+    if (planeAnim) planeAnim.pause();
+    var t = { a: 0 };
+    planeAnim = anime({
+      targets: t,
+      a: 360,
+      duration: 14000,
+      easing: "linear",
+      loop: true,
+      update: function () {
+        var a = t.a * Math.PI / 180;
+        var cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+        var rx = Math.max(cx - 34, 120), ry = Math.max(cy - 34, 120);
+        var dir = Math.atan2(ry * Math.cos(a), -rx * Math.sin(a)) * 180 / Math.PI;
+        var x = cx + rx * Math.cos(a), y = cy + ry * Math.sin(a);
+        planeSvg.style.transform = "translate(" + x + "px," + y + "px) rotate(" + (dir + 90) + "deg)";
+      }
+    });
+  }
+
   function fadeToLetter() {
     puzzleSection.classList.remove("show");
     captionEl.classList.remove("show");
@@ -756,6 +857,7 @@
       letterStage.classList.add("away");
       letterPaper.classList.add("show");
       revealPaper();
+      flyLetterPlane();
     }, 700);
   });
 
