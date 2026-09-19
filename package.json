@@ -1,0 +1,15 @@
+{
+  "name": "san-valentin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sorpresa animada de San Valentin con aviones 3D, puzzle de puntos de colores y carta.",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "animejs": "^3.2.2",
+    "express": "^4.19.2",
+    "three": "0.128.0"
+  }
+}

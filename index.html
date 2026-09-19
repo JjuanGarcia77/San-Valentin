@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Para ti - Día del Amor y la Amistad</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<canvas id="scene3d"></canvas>
+<div class="vignette"></div>
+<div id="hearts"></div>
+
+<div class="caption" id="caption">Amor, resuélvelo</div>
+
+<section id="puzzle">
+  <div class="puzzle-box">
+    <h2>Amor, resuélvelo</h2>
+    <div class="puzzle-hint">Si lo resuelves, amor, verás algo. Mi amor, besotes, te amo.</div>
+    <canvas id="puzzleCanvas"></canvas>
+    <div class="puzzle-progress" id="puzzleProgress">0 / 6</div>
+  </div>
+</section>
+
+<section id="letter">
+  <div class="letter-stage" id="letterStage">
+    <div class="envelope-scene" id="envelopeScene">
+      <div class="envelope" id="envelope">
+        <div class="env-back"></div>
+        <div class="env-panel-sides"></div>
+        <div class="env-panel-bottom"></div>
+        <div class="env-heart"><div class="heart-shape"></div></div>
+        <div class="env-flap"></div>
+      </div>
+    </div>
+    <div class="letter-open-hint" id="letterHint">Toca la carta para abrirla</div>
+  </div>
+  <div class="letter-paper" id="letterPaper">
+    <div class="paper-card">
+      <div class="paper-date">14 de febrero</div>
+      <div class="paper-big">Feliz día del amor y la amistad</div>
+      <div class="paper-heart"><div class="heart-shape"></div></div>
+      <div class="paper-body" id="letterBody"></div>
+      <div class="paper-seal"><div class="heart-shape"></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="dots-rain" id="rain"></div>
+<div class="fade-strip" id="fadeStrip"></div>
+
+<script src="three.min.js"></script>
+<script src="anime.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
